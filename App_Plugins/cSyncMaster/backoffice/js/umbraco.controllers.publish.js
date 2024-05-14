@@ -133,7 +133,7 @@ angular.module('umbraco').controller('PublishTocontroller', function ($filter, $
     vm.CollectContent = function () {
         vm.step++;
         var entrUrl = document.getElementById("urlAddress").value.trim(' ');
-        
+
         var count = 1;
 
         switch (vm.step) {
@@ -194,7 +194,7 @@ angular.module('umbraco').controller('PublishTocontroller', function ($filter, $
                         },
                         data: dataX
                     }).then(function (response3) {
-                        
+
                         countAllnodes++;
                         if (response3.data.length != 0) {
                             $scope.difference = true;
@@ -257,7 +257,6 @@ angular.module('umbraco').controller('PublishTocontroller', function ($filter, $
                 });
                 break;
             case 3:
-                entrUrl = entrUrl.slice(0, -1);
                 $scope.report = false;
                 $scope.difference = false;
                 $scope.changeDet = false;
@@ -268,64 +267,93 @@ angular.module('umbraco').controller('PublishTocontroller', function ($filter, $
                 document.getElementById("pub-Button").style.display = "none";
                 angular.forEach($scope.nodesNeedToPublish, function (selNode) {
 
+                    var dataX = {
+                        'Id': selNode.nodeKey,
+                        'Url': entrUrl.replace("https", "http"),
+                        'Action': selNode.action
+                    };
+                    debugger;
                     $http({
-                        url: apiUrl + "GetNode",
-                        method: "GET",
-                        params: { "id": selNode.nodeKey }
-                    }).then(function (response1) {
-                        if (selNode.action == "Update") {
-                            $http({
-                                url: entrUrl + apiUrl + "UpdateNode",
-                                method: "PUT",
-                                headers: {
-                                    "Access-Control-Allow-Origin": "*",
-                                    "Access-Control-Allow-Methods": "*",
-                                    "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
-                                },
-                                data: response1.data
-                            }).then(function (response2) {
-                                vm.desc = ": [" + entrUrl + "/umbraco]";
-                                vm.title = vm.selectSite.name + " Complete";
-                                $scope.loader = false;
-                                //$scope.pubComplt = true;
-                                //$scope.pubText = "Publish completed"
-                                $scope.myText = count + " item (s) have been updated";
-                                $scope.mySubText = count + " item(s) was updated";
-                                $scope.report = true;
-                                $scope.changeDet = true;
-                                angular.forEach($scope.nodeChanges, function (t) {
-                                    t.symb = "icon-check";
-                                    var ico = document.getElementById(t.name);
-                                    ico.style.color = "green";
-                                });
-                                $scope.difference = true;
-                            });
-                        }
-                        else if (selNode.action == "Create") {
-                            $http({
-                                url: entrUrl + apiUrl + "CreateNode",
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Access-Control-Allow-Origin': '*'
-                                },
-                                data: response1.data
-                            }).then(function (response2) {
-                                vm.desc = ": [" + entrUrl + "/umbraco]";
-                                vm.title = vm.selectSite.name + " Complete";
-                                $scope.myText = count + " item (s) have been updated";
-                                $scope.mySubText = count + " item(s) was updated";
-                                $scope.report = true;
-                                $scope.changeDet = true;
-                                angular.forEach($scope.nodeChanges, function (t) {
-                                    t.symb = "icon-check";
-                                    var ico = document.getElementById(t.name);
-                                    ico.style.color = "green";
-                                });
-                                $scope.difference = true;
-                            });
-                        }
+                        url: apiUrl + "NodeUpdate",
+                        method: "POST",
+                        data: dataX
+                    }).then(function (response2) {
+                        debugger;
+                        vm.desc = ": [" + entrUrl + "/umbraco]";
+                        vm.title = vm.selectSite.name + " Complete";
+                        $scope.loader = false;
+                        //$scope.pubComplt = true;
+                        //$scope.pubText = "Publish completed"
+                        $scope.myText = count + " item (s) have been updated";
+                        $scope.mySubText = count + " item(s) was updated";
+                        $scope.report = true;
+                        $scope.changeDet = true;
+                        angular.forEach($scope.nodeChanges, function (t) {
+                            t.symb = "icon-check";
+                            var ico = document.getElementById(t.name);
+                            ico.style.color = "green";
+                        });
+                        $scope.difference = true;
                     });
+
+                    //$http({
+                    //    url: apiUrl + "GetNode",
+                    //    method: "GET",
+                    //    params: { "id": selNode.nodeKey }
+                    //}).then(function (response1) {
+                    //    if (selNode.action == "Update") {
+                            //$http({
+                            //    url: entrUrl + apiUrl + "UpdateNode",
+                            //    method: "PUT",
+                            //    headers: {
+                            //        "Access-Control-Allow-Origin": "*",
+                            //        "Access-Control-Allow-Methods": "*",
+                            //        "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
+                            //    },
+                            //    data: response1.data
+                            //}).then(function (response2) {
+                    //            vm.desc = ": [" + entrUrl + "/umbraco]";
+                    //            vm.title = vm.selectSite.name + " Complete";
+                    //            $scope.loader = false;
+                    //            //$scope.pubComplt = true;
+                    //            //$scope.pubText = "Publish completed"
+                    //            $scope.myText = count + " item (s) have been updated";
+                    //            $scope.mySubText = count + " item(s) was updated";
+                    //            $scope.report = true;
+                    //            $scope.changeDet = true;
+                    //            angular.forEach($scope.nodeChanges, function (t) {
+                    //                t.symb = "icon-check";
+                    //                var ico = document.getElementById(t.name);
+                    //                ico.style.color = "green";
+                    //            });
+                    //            $scope.difference = true;
+                    //        });
+                    //    }
+                    //    else if (selNode.action == "Create") {
+                    //        $http({
+                    //            url: entrUrl + apiUrl + "CreateNode",
+                    //            method: "POST",
+                    //            headers: {
+                    //                'Content-Type': 'application/json',
+                    //                'Access-Control-Allow-Origin': '*'
+                    //            },
+                    //            data: response1.data
+                    //        }).then(function (response2) {
+                    //            vm.desc = ": [" + entrUrl + "/umbraco]";
+                    //            vm.title = vm.selectSite.name + " Complete";
+                    //            $scope.myText = count + " item (s) have been updated";
+                    //            $scope.mySubText = count + " item(s) was updated";
+                    //            $scope.report = true;
+                    //            $scope.changeDet = true;
+                    //            angular.forEach($scope.nodeChanges, function (t) {
+                    //                t.symb = "icon-check";
+                    //                var ico = document.getElementById(t.name);
+                    //                ico.style.color = "green";
+                    //            });
+                    //            $scope.difference = true;
+                    //        });
+                    //    }
+                    //});
                 });
                 break;
         }

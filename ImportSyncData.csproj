@@ -12,9 +12,6 @@
 	<ItemGroup>
 		<!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
 		<PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
-		<Reference Include="SyncData">
-			<HintPath>C:\Users\vinu.jose\PROJECTS\Project [Usync]\DemoCSync\ImportSyncData\SyncData.dll</HintPath>
-		</Reference>
 		<RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
 	</ItemGroup>
 	<ItemGroup>
@@ -32,6 +29,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="SyncData.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="SyncData">
+	    <HintPath>Dll\SyncData.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<PropertyGroup>

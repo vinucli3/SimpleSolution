@@ -1,18 +1,24 @@
 ﻿
 
+using Azure;
+using Lucene.Net.Codecs.Compressing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
+using NPoco.Linq;
 using Polly;
 using Serilog.Context;
 using SyncData.Model;
 using SyncData.PublishServer;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Net;
+using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Umbraco.Cms.Api.Common.Json;
 using Umbraco.Cms.Core;
@@ -255,7 +261,7 @@ namespace ImportSyncData
 							}
 							_contentTypeService.Save(contType);
 						}
-						
+
 					}
 
 				}
@@ -271,62 +277,70 @@ namespace ImportSyncData
 		[HttpGet]
 		public async Task<IActionResult> testCall2()
 		{
-			////using (var scope = _scopeprovider.CreateScope(autoComplete: true))
-			////{
-			////	// build a query to select everything the people table
-			////	var sql = scope.SqlContext.Sql().Select("*").From("serverModel");
-			//	var host=  HttpContext.Request.Host;
-			////	// fetch data from the database with the query and map to the Person class
-			////	//var test = scope.Database.Fetch<ServerModel>(sql);
-			////	//foreach (var item in test)
-			////	//{
-			//var client = _httpFactory.CreateClient("HttpWeb");
-			//client.BaseAddress = new Uri("https://"+ host + "/umbraco/publishcontent/publish/");
-			//string response = await client.GetStringAsync("heartbeat").ConfigureAwait(false);
-			////	//}
-
-			////}
-			///
-			List<HeartBeatDTO> heartBeatDTO = new List<HeartBeatDTO>();
-			using (var scope = _scopeprovider.CreateScope(autoComplete: true))
+			string folder = "cSync\\Content";
+			if (!Directory.Exists(folder)) { };
+			string[] fyles = Directory.GetFiles(folder);
+			string path = "";
+			foreach (string file in fyles)
 			{
-				// build a query to select everything the people table
-				var sql = scope.SqlContext.Sql().Select("*").From("serverModel");
-				var host = HttpContext.Request.Host;
-				// fetch data from the database with the query and map to the Person class
-				List<ServerModel>? allServers = scope.Database.Fetch<ServerModel>(sql);
-				foreach (var item in allServers)
+				XElement fileExist = XElement.Load(file);
+				XElement? root = new XElement(fileExist.Name, fileExist.Attributes());
+
+				string? keyVal = root.Attribute("Key").Value;
+				if (new Guid("a8bdca57-53c9-4e52-aa59-838b62ffeb1e") == new Guid(keyVal))
 				{
-					HeartBeatDTO beatDTO = new HeartBeatDTO();
-					beatDTO.Server = item.Url;
-					beatDTO.Name = item.Name;
-					//_logger.LogInformation(url);
-					//Creating the HttpWebRequest
-					try
-					{
-						HttpWebRequest request = WebRequest.Create(item.Url.Replace("https", "http")) as HttpWebRequest;
-						//Setting the Request method HEAD, you can also use GET too.
-						request.Method = "checkConnection";
-						//Getting the Web Response.
-						HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-						//Returns TRUE if the Status code == 200
-						response.Close();
-						beatDTO.Status = 0;
-					}
-					catch
-					{
-						//Any exception will returns false.
-						beatDTO.Status = 1;
-					}
-					heartBeatDTO.Add(beatDTO);
+					path = file; break;
 				}
 			}
+			//string path = "cSync\\Content\\" + node.Name?.Replace(" ", "-").ToLower() + ".config";
+			//var elementPath = await _updateContent.ReadNodeAsync(new Guid(id));
 
 
-				return Ok(heartBeatDTO);
+
+			var source = XElement.Load(path);
+
+			
+			string jsonData = JsonConvert.SerializeObject(source);
+			using (HttpClient client = new HttpClient())
+			{
+				string url = "http://stage.csync.com/" + "umbraco/publishcontent/publish/UpdateNode";
+				HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, url);
+				request.Content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+				
+				HttpResponseMessage response = await client.SendAsync(request);
+
+				// Handling response
+				if (response.IsSuccessStatusCode)
+
+				{
+
+				}
+				return Ok(response);
+			}
+			//var client = _httpFactory.CreateClient("HttpWeb");
+			//JsonSerializerOptions options = new()
+			//{
+			//	ReferenceHandler = ReferenceHandler.IgnoreCycles,
+			//	WriteIndented = true
+			//};
+			//var json = System.Text.Json.JsonSerializer.Serialize(source, options);
+			//var request = new HttpRequestMessage()
+			//{
+			//	RequestUri = new Uri("http://stage.csync.com/" + "umbraco/publishcontent/publish/UpdateNode"),
+			//	Method = HttpMethod.Put
+			//};
+			//request.Content
+			//using var responsemsg = await client.SendAsync(request).ConfigureAwait(false);
+
+			//	return true;
+			//else
+			//	return false;
+
+
+			
 		}
 
-		
+
 		//var client = _httpFactory.CreateClient("HttpWeb");
 		////var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 		////var request = new HttpRequestMessage()
