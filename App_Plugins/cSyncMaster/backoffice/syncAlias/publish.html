@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+<body ng-App="myAPP">
+    <div ng-controller="ServerConfigController as vm">
+        <div data-element="editor-header" class="umb-editor-header umb-panel-header">
+            <div class="umb-panel-header-content-wrapper">
+                <div class="umb-panel-header-content">
+                    <div class="umb-panel-header-left-side" >
+                        <div class="umb-panel-header-title-wrapper">
+                            <div class="umb-panel-header-name" ng-if="true" title="{{key}}">Change details</div>
+                            <div class="umb-panel-header-locked-description" ng-show="true">what is going to change</div>
+                        </div>
+                    </div>
+                    <umb-editor-navigation data-element="editor-sub-views"
+                                           navigation="vm.navigation"
+                                           on-select="vm.selectNavigationItem(item)">
+
+                    </umb-editor-navigation>
+                </div>
+            </div>
+            <umb-overlay data-element="editor-overlay-icon-picker"
+                         ng-if="dialogModel.show"
+                         model="dialogModel"
+                         position="right"
+                         view="dialogModel.view">
+            </umb-overlay>
+        </div>
+        <div data-element="editor-container" class="umb-editor-container umb-panel-body umb-scrollable row-fluid">
+            <umb-overlay-backdrop></umb-overlay-backdrop>
+            <div class="umb-pane" style="display: flex; height: 95%;">
+                
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,140 @@
+﻿<div ng-controller="pubOverlayController as vm">
+    <!--<div class="flex justify-center flex-column items-center">-->
+    <!--<i class="large icon {{vm.icon}}"></i>
+        <h3>{{vm.content}}</h3>
+    </div>-->
+    <input type="text" id="urlAddress" align="left" style="display:none" />
+    <div ng-show="sapstage1" style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px;">
+            <div ng-repeat="t in vm.success">
+                <label class="label-checkbox">
+                    <input type="checkbox" ng-click="vm.GetSelected(t)" ng-disabled="{{t.Status}}">
+                    <span style="display: grid;">
+                        <i class="icon-disk-image" ng-style="t.style"></i>
+                        <span style="margin: auto; border: transparent; ">{{t.name}}</span>
+                        <span style="font-size: 8px; border: transparent; margin: auto; margin-top: -15px; background: transparent; ">{{t.Status == 0 ? "Available" : "Not avalable" }}</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="sapstage2">
+        <div ng-show="sapstage2_0">
+            <div>
+                <input type="checkbox" ng-change="vm.childSetChange()" style="zoom: 1.5;" ng-model="addChildOver">
+                <label for="child"><b>Include children</b></label>
+                <div style="margin-left: 24px;">
+                    <label for="child">Include the children of the selected item</label>
+                </div>
+            </div>
+            <hr style=" margin: 8px 0;" />
+            <div style="margin-left: 15px; margin-top: 16px;" ng-class="{'div-disabled': disableItem}">
+                <input type="checkbox" style="zoom: 1.5;" ng-model="deleteItems">
+                <label for="childDelete"><b>Delete missing items</b></label>
+                <div style="margin-left: 25px;">
+                    <label for="childDelete">Remove any items on the target site that are not children of the selected item</label>
+                </div>
+            </div>
+        </div>
+        <div ng-show="sapstage2_1">
+            <div>
+                <label>This item has no children to sync.</label>
+            </div>
+        </div>
+        <hr />
+        <label style="font-size: 16px; font-style: italic; color: gray; margin-left: 20px; margin-bottom: 14px;">Will also sync content configuration such as host name settings</label>
+    </div>
+
+    <div ng-show="sapstage3_1">
+        <div class="umb-panel-header-left-side" id="stage2_0_2">
+            <i class="icon-locate" style="color: green; font-size: xxx-large; margin-top: 10px;"></i>
+            <div class="umb-panel-header-title-wrapper" style="padding: 10px;">
+                <div class="umb-panel-header-name">No Changes detected</div>
+                <div class="umb-panel-header-locked-description">
+                    It looks like everything is already in sync between
+                    these servers, so you do need to do anything.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="sapstage3">
+        <!--<textarea ng-model="myText" rows="1" class="changeDet"></textarea>-->
+        <!--<div id="sapstage2_1">-->
+        <!--<div data-element="editor-container" class="umb-editor-container umb-panel-body umb-scrollable row-fluid">
+        <umb-overlay-backdrop></umb-overlay-backdrop>-->
+        <div class="umb-pane">
+            <div class="umb-box-header">
+                <div class="umb-box-header-title">
+                    <div style="display: flex; gap: 95px;">
+                        <span>Content</span>
+                        <span>Updating {{nodeChanges.length}}/{{allNodes.length}} Items</span>
+                        <a ng-click="vm.showTable()">
+                            {{expand.includes('Expand') ? '&#x25BC;' : '&#x25B2;'}}
+                            {{expand}}
+                        </a>
+                    </div>
+                </div>
+
+                <div ng-show="sapstage3_2">
+                    <table class="table table-bordered table-hover" id="ServerTable">
+                        <tr>
+                            <td>
+                                <b></b>
+                            </td>
+                            <td>
+                                <b>
+                                    Change
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+                                    Name
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="x in nodeChanges">
+                            <td>
+                                <i class="{{x.symb}}" ng-style="{{x.symbClr}}" id="{{x.name}}"></i>
+                            </td>
+                            <td>
+                                {{x.change}}
+                            </td>
+                            <td>
+                                {{x.name}}
+                            </td>
+                            <td>
+                                <a href="" id='yes' ng-click="vm.showDetail(x.name)">Detail</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="loader" class="loader" style="margin-left: 217px; margin-top: 0px; width: 60px; height: 60px; "></div>
+    <umb-box style="background: #c5e7d3">
+        <div ng-show="viewChange" style="display: flex; gap: 9px;padding:15px ">
+            <div style="margin: auto;">
+                <i class="icon-locate" style="color: green;font-size: xxx-large;"></i>
+            </div>
+            <div>
+                <div class="umb-box-header-title">
+                    <span>No Changes detected</span>
+                </div>
+                <div class="umb-box-header-description" style="margin-top:7px">
+                    <span>
+                        It looks like everything is already in sync between
+                        these servers, so you do need to do anything.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </umb-box>
+</div>
+<!--</div>-->
+<!--</div>-->

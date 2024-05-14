@@ -1,0 +1,179 @@
+﻿
+<div ng-controller="PublishTocontroller as vm" id="pubEditor">
+    <form name="mySectionForm" val-form-manager novalidate>
+        <umb-editor-view>
+            <div data-element="editor-header" class="umb-editor-header umb-panel-header">
+                <div class="umb-panel-header-content-wrapper" style="padding: 10px;">
+                    <div class="umb-panel-header-content">
+                        <div class="umb-panel-header-left-side">
+                            <div class="umb-panel-header-title-wrapper">
+                                <div class="umb-panel-header-name">{{vm.title}}</div>
+                                <div class="umb-panel-header-locked-description">{{vm.desc}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="umb-pane">
+                <umb-box style="margin-top:90px" ng-show="server">
+                    <umb-box-header>
+                        <div class="umb-box-header-title">
+                            <span>Select a target</span>
+                        </div>
+                        <div class="umb-box-header-description">
+                            <span>Choose where to publish content</span>
+                        </div>
+                    </umb-box-header>
+                    <umb-box-content>
+                        <input type="text" id="urlAddress" align="left" style="display:none" />
+                        <div id="stage1">
+                            <div style="display: flex; gap: 10px;">
+                                <div ng-repeat="t in success">
+                                    <label class="label-checkbox" >
+                                        <input type="checkbox" ng-click="vm.GetSelected(t)" ng-disabled="{{t.status}}">
+                                        <span style="display: grid;">
+                                            <i class="icon-planet"  ng-class="{ 'i-notavailable' : t.status == 1, 'i-available' : t.status == 0}"></i>
+                                            <span style="margin: auto; border: transparent; ">{{t.name}}</span>
+                                            <span style="font-size: 8px; border: transparent; margin: auto; margin-top: -15px; background: transparent; ">{{t.status == 0 ? "Available" : "Not avalable" }}</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </umb-box-content>
+                </umb-box>
+                <umb-box ng-show="showChild">
+                    <umb-box-header>
+                        <div class="umb-box-header-title">
+                            <span>{{vm.selectSite.name}}: Settings </span>
+                        </div>
+                        <div class="umb-box-header-description">
+                            <span>Push undefined to {{vm.selectSite.name}}</span>
+                        </div>
+                    </umb-box-header>
+                    <umb-box-content>
+                        <div>
+                            <input type="checkbox" ng-change="vm.childSetChange()" style="zoom: 1.5;" ng-model="addChild">
+                            <label for="child"><b>Include children</b></label>
+                            <div style="margin-left: 24px;">
+                                <label for="child">Include the children of the selected item</label>
+                            </div>
+                        </div>
+                        <hr style=" margin: 8px 0;" />
+                        <div style="margin-left: 15px; margin-top: 16px;" ng-class="{'div-disabled': disableItem}">
+                            <input type="checkbox" style="zoom: 1.5;" ng-change="includeItems()" ng-model="deleteItems">
+                            <label for="childDelete"><b>Delete missing items</b></label>
+                            <div style="margin-left: 25px;">
+                                <label for="childDelete">Remove any items on the target site that are not children of the selected item</label>
+                            </div>
+                        </div>
+                    </umb-box-content>
+                    <hr>
+                    <label style="font-size: 16px; font-style: italic; color: gray; margin-left: 20px; margin-bottom: 14px;">Will also sync content configuration such as host name settings</label>
+                </umb-box>
+
+                <umb-box ng-show="report" ng-style="myStyleObj">
+                    <umb-box-header>
+                        <div ng-show="changeDet">
+                            <div class="umb-box-header-title">
+                                <span>{{myText}}</span>
+                            </div>
+                            <div class="umb-box-header-description">
+                                <span><i class="icon-trafic" style="color:cornflowerblue"></i> {{mySubText}}</span>
+                            </div>
+                        </div>
+                        <div ng-show="noChangeView" style="display: flex; gap: 9px; ">
+                            <div style="margin: auto;">
+                                <i class="icon-locate" style="color: green;font-size: xxx-large;"></i>
+                            </div>
+                            <div>
+                                <div class="umb-box-header-title">
+                                    <span>No Changes detected</span>
+                                </div>
+                                <div class="umb-box-header-description" style="margin-top: 7px;">
+                                    <span>
+                                        It looks like everything is already in sync between
+                                        these servers, so you do need to do anything.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </umb-box-header>
+                </umb-box>
+
+                <umb-box ng-show="difference">
+                    <umb-box-header>
+                        <div style="display: flex; gap: 75px; background-color: white; height: 40px; align-items: center; padding: 10px;">
+                            <span>Content</span>
+                            <span>Updating {{nodeChanges.length}}/{{allNodes.length}} Items</span>
+                            <a ng-click="vm.showTable()">
+                                {{expand ? '&#x25BC; Hide' : '&#x25B2; Expand'}}
+                            </a>
+                        </div>
+                    </umb-box-header>
+                    <umb-box-content ng-show="detail">
+                        <div>
+                            <table cellpadding="12" class="table table-bordered table-hover" id="ServerTable">
+                                <tr>
+                                    <td>
+                                        <b></b>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            Change
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            Name
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <b>
+                                        </b>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="x in nodeChanges">
+                                    <td>
+                                        <i class="{{x.symb}}" ng-style="{{x.symbClr}}" id="{{x.name}}"></i>
+                                    </td>
+                                    <td>
+                                        {{x.change}}
+                                    </td>
+                                    <td>
+                                        {{x.name}}
+                                    </td>
+                                    <td>
+                                        <a href="" id='yes' ng-click="vm.showDetail(x.name)">Detail</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </umb-box-content>
+                </umb-box>
+                <div ng-show="loader" class="loader"></div>
+            </div>
+
+            <umb-editor-footer ng-if="model.infiniteMode">
+                <umb-editor-footer-content-right>
+                    <umb-button type="button"
+                                label-key="general_close"
+                                shortcut="esc"
+                                action="model.close()">
+                        Close
+                    </umb-button>
+                    <button type="button" class="publishbtn" ng-class="{'div-disabled': pubEnable}"
+                            shortcut="enter"
+                            id="pub-Button"
+                            ng-click="vm.CollectContent()"
+                            value="Publish to server">
+                        Publish to server
+                    </button>
+                </umb-editor-footer-content-right>
+            </umb-editor-footer>
+        </umb-editor-view>
+    </form>
+</div>
+

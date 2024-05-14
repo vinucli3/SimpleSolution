@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<language>
+	<area alias="dashboardTabs">
+		<key alias="syncDashboard">cSync Publisher</key>
+	</area>
+	<area alias="treeHeaders">
+		<key alias="cGroup">Synchronization</key>
+	</area>
+</language>

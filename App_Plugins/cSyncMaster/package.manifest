@@ -1,0 +1,15 @@
+{
+  "javascript": [
+    "/App_Plugins/cSyncMaster/backoffice/js/umbraco.controllers.syncData.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/umbraco.controllers.syncPublisher.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/table2excel.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/script.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/umbraco.controllers.publish.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/index.js",
+    "/App_Plugins/cSyncMaster/overlays/puboverlay.controller.js",
+    "/App_Plugins/cSyncMaster/backoffice/js/serverConfig.controller.js"
+  ],
+  "css": [
+    "/App_Plugins/cSyncMaster/backoffice/css/ipsum.css"
+  ]
+}

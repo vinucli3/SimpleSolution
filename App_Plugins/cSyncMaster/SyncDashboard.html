@@ -1,0 +1,193 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text List Example</title>
+</head>
+<body>
+    
+    <div class="ipsum" ng-controller="SyncDatacontroller as vm">
+        <div>
+            <div id="myModal" class="modal">
+                Modal content
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+
+                    <input type="text" id="urlAddress" align="left" style="display:block; width:100%" />
+                    <button type="button" ng-click="vm.contentDifference()" button-style="success">Find Difference</button>
+                    <textarea id="nodeDetail" style="width: -webkit-fill-available; height: 150px; "></textarea>
+                    <button type="button" ng-click="vm.upDateValue()"
+                            button-style="success">
+                        Update Title
+                    </button>
+                    <button type="button" ng-click="vm.upDateImage()"
+                            button-style="success">
+                        Update Image
+                    </button>
+                    <div id="myModal" class="modal">
+                    </div>
+                    <span class="alert alert-success" style="display:none" id="message">
+                        <strong>Success!</strong> Successfully Updated.
+                    </span>
+                    <div class="alert alert-danger" style="display:none" id="messageError">
+                        <strong>Danger!</strong> Error update.
+                    </div>
+                </div>
+
+            </div>
+            <div id="stage1" class="selctServer">
+                <!--<table cellpadding="12" class="table table-bordered table-hover" id="ServerTable">
+            <tr>
+                <td>
+                    <b>Server Name</b>
+                </td>
+                <td>
+                    <b>
+                        Status
+                    </b>
+                </td>
+                <td>
+                    <b>
+                        Select
+                    </b>
+                </td>
+            </tr>-->
+                <label>Select atarget</label>
+                <h6 style="margin-top: -4px;">Choose where to publish content</h6>
+                <div style="display: flex; gap: 10px;">
+                    <div ng-repeat="t in vm.success">
+                        <input class="Server" type="button" value="{{t.name}}" ng-click="vm.GetSelected(t.Server)" ng-disabled="{{t.Status}}" />
+                    </div>
+                    <!--<td>
+                    {{response.Server}}
+                </td>
+                <td>
+                    {{response.Status}}
+                </td>
+                <td>
+                    <input type="checkbox" name={{response.Server}} id='yes' ng-click="vm.GetSelected()" />
+                </td>-->
+                </div>
+                <!--</table>-->
+            </div>
+            <div id="stage2">
+                <textarea ng-model="myText" rows="1" class="changeDet"></textarea>
+                <div id="stage2_1">
+                    <table cellpadding="12" class="table table-bordered table-hover" id="ServerTable">
+                        <tr>
+                            <td>
+                                <b></b>
+                            </td>
+                            <td>
+                                <b>
+                                    Change
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+                                    Name
+                                </b>
+                            </td>
+                            <td>
+                                <b>
+
+                                </b>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="x in nodeChanges">
+                            <td>
+                                <i class="icon-sync" style="color:orange"></i>
+                            </td>
+                            <td>
+                                {{x.change}}
+                            </td>
+                            <td>
+                                {{x.name}}
+                            </td>
+                            <td>
+                                <a href="" id='yes' ng-click="vm.GetSelected()">Detail</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <input id="pub-Button" class="publishbut" type="button" ng-click="vm.contentDifference()" value="Publish to server" />
+            <input id="pub-Button" type="button" ng-click="vm.closeover()" value="Close" />
+        </div>
+    </div>
+   
+        
+        <!--<div class="sub-main2">-->
+        <!--<h2>Add Servers</h2>
+    <input type="text" id="textInput" placeholder="Enter server url">-->
+        <!--<button type="button" ng-click="vm.addText()" button-style="success">Add</button>-->
+        <!--<ul id="textList" hidden></ul>-->
+        <!--<button type="button" ng-click=""
+            button-style="success">
+        Check Connection
+    </button>-->
+        <!--</div>-->
+   
+</body>
+</html>
+<!--<div>
+    <umbraco-dir data='vm.nodesList'></umbraco-dir>
+</div>-->
+<!--<umb-box>
+    <umb-box-header title="Content Nodes"></umb-box-header>
+    <umb-box-content>
+        <div class="scrollingDiv">
+            <table cellpadding="12" class="table table-bordered table-hover" id="flow3">
+                <tr>
+                    <td>
+                        <b>
+                            Id
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            Key
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            Name
+                        </b>
+                    </td>
+                </tr>
+                <tr ng-repeat="row in vm.nodesList|filter:paginate" style="cursor: move;" ng-click="vm.selectRow($event, row,vm.nodesList)" ng-class="{success: row.selected}">
+                    <td>
+                        {{row.id}}
+                    </td>
+                    <td>
+                        {{row.key}}
+                    </td>
+                    <td>
+                        {{row.name}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="pagination pull-right">
+
+            <ul>
+                <li ng-class="{disabled: currentPage == 1}">
+                    <a ng-click="prevPage()">« Prev</a>
+                </li>
+                <li ng-repeat="n in range(vm.nodesList.length, currentPage, currentPage + gap) "
+                    ng-class="{active: n == currentPage}"
+                    ng-click="setPage(n)">
+                    <a ng-bind="n ">{{n}}</a>
+                </li>
+                <li ng-class="{disabled: numberofPage == currentPage}">
+                    <a ng-click="nextPage()">Next »</a>
+                </li>
+            </ul>
+        </div>
+    </umb-box-content>
+</umb-box>-->

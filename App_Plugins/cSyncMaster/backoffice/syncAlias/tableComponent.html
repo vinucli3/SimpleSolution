@@ -1,0 +1,45 @@
+﻿<umb-box>
+    <umb-box-header title="Content Nodes"></umb-box-header>
+    <umb-box-content>
+        <div class="scrollingDiv">
+            <table cellpadding="12" class="table table-bordered table-hover" id="flow3">
+                <tr>
+                    <td>
+                        <b>
+                            Id
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            Url
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            Key
+                        </b>
+                    </td>
+                    <td>
+                        <b>
+                            Name
+                        </b>
+                    </td>
+                </tr>
+                <tr ng-repeat="row in data|filter:paginate" style="cursor: move;" ng-click="vm.selectRow($event, row,data)" ng-class="{success: row.selected}">
+                    <td>
+                        {{row.id}}
+                    </td>
+                    <td>
+                        {{row.url}}
+                    </td>
+                    <td>
+                        {{row.key}}
+                    </td>
+                    <td>
+                        {{row.name}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </umb-box-content>
+</umb-box>

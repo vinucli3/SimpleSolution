@@ -1,0 +1,90 @@
+﻿<div ng-controller="PublishTocontroller as vm" id="shodiff">
+
+    <div data-element="editor-header" class="umb-editor-header umb-panel-header">
+        <div class="umb-panel-header-content-wrapper">
+            <div class="umb-panel-header-content">
+                <div class="umb-panel-header-left-side" ng-class="-top-position">
+                    <div class="umb-panel-header-title-wrapper">
+                        <div class="umb-panel-header-name" ng-if="true" title="{{key}}">Change details</div>
+                        <div class="umb-panel-header-locked-description" ng-show="true">what is going to change</div>
+                    </div>
+                </div>
+                <umb-editor-navigation data-element="editor-sub-views"
+                                       navigation="vm.navigation"
+                                       on-select="vm.selectNavigationItem(item)">
+
+                </umb-editor-navigation>
+            </div>
+        </div>
+        <umb-overlay data-element="editor-overlay-icon-picker"
+                     ng-if="dialogModel.show"
+                     model="dialogModel"
+                     position="right"
+                     view="dialogModel.view">
+        </umb-overlay>
+    </div>
+    <div data-element="editor-container" class="umb-editor-container umb-panel-body umb-scrollable row-fluid">
+        <umb-overlay-backdrop></umb-overlay-backdrop>
+        <div class="umb-pane" style="display: flex; height: 95%;">
+            <div ng-show="detailTab" id="dtab" class="umb-editor-container" style="background: white; height: fit-content; margin-left: inherit; margin-right: inherit; ">
+                <h6 style=" margin-left: inherit;">These are the items that are different local and remote items {{model.data.length}}</h6>
+                <table cellpadding="12" class="table table-bordered table-hover" id="ServerTable">
+                    <tr>
+                        <td>
+                            <b>
+
+                            </b>
+                        </td>
+                        <td>
+                            <b>
+                                Action
+                            </b>
+                        </td>
+                        <td>
+                            <b>
+                                Items
+                            </b>
+                        </td>
+                        <td>
+                            <b>
+                                Difference
+                            </b>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="x in model.data">
+                        <td>
+                            <i class="{{x.symb}}" ng-style="{{x.symbClr}}"></i>
+                        </td>
+                        <td>
+                            {{x.action}}
+                        </td>
+                        <td>
+                            {{x.item}}
+                        </td>
+                        <td>
+                            <p><del class="old">{{x.old}}</del><span class="new">{{x.new}}</span> </p>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <!--<div ng-show="viewTab" id="vtab" style="width: 100%; display: flex; ">
+                <iframe src="{{model.data[0].localUrl}}" style="border: 1px solid black; height: 100%; min-width: 48%;">
+                </iframe>-->
+                <!--<iframe src="{{model.data[0].remoteUrl + "/embed"}}" style="border: 1px solid black; height: 100%; min-width: 48%;">
+    </iframe>-->
+                <!--<iframe style="border: 1px solid black; height: 100%; min-width: 48%;" src="{{trustSrc(model.data[0].remoteUrl)}}" target="_parent" ></iframe>
+            </div>-->
+        </div>
+    </div>
+
+    <umb-editor-footer ng-if="model.infiniteMode">
+        <umb-editor-footer-content-right>
+            <umb-button type="button"
+                        label-key="general_close"
+                        shortcut="esc"
+                        action="model.close()">
+            </umb-button>
+        </umb-editor-footer-content-right>
+    </umb-editor-footer>
+</div>

@@ -1,0 +1,187 @@
+﻿<div class="main" ng-controller="SyncDatacontroller as vm">
+    <div data-element="editor-header" class="umb-editor-header umb-panel-header">
+        <div class="umb-panel-header-content-wrapper">
+            <div class="umb-panel-header-content">
+                <div class="umb-panel-header-left-side">
+                    <div class="umb-panel-header-title-wrapper">
+                        <div class="umb-panel-header-name" ng-if="true" title="{{key}}">Change details</div>
+                        <div class="umb-panel-header-locked-description" ng-show="true">what is going to change</div>
+                    </div>
+                </div>
+                <umb-editor-navigation data-element="editor-sub-views"
+                                       navigation="vm.navigation"
+                                       on-select="vm.selectNavigationItem(item)">
+
+                </umb-editor-navigation>
+            </div>
+        </div>
+        <umb-overlay data-element="editor-overlay-icon-picker"
+                     ng-if="dialogModel.show"
+                     model="dialogModel"
+                     position="right"
+                     view="dialogModel.view">
+        </umb-overlay>
+    </div>
+    <div data-element="editor-container" class="umb-editor-container umb-panel-body umb-scrollable row-fluid" ng-show="uSyncTab">
+        <umb-overlay-backdrop></umb-overlay-backdrop>
+        <!--<umb-box-header class="umb-pane">-->
+        <div class="umb-editor-sub-views sub-view-export">
+            <umb-box>
+                <umb-box-content>
+                    <h1 style="text-align:center">Everything</h1>
+                    <h6 style="text-align:center">All Settings, Content, and other things</h6>
+                    <div style="text-align:center;">
+                        <button style="background-color: #1b264f;color:white">Report</button>
+                        <button style="background-color: #39d38b; color: white" ng-click="vm.import()">Import</button>
+                        <button ng-click="vm.export()"><span>Export</span></button>
+                    </div>
+                </umb-box-content>
+            </umb-box>
+
+            <umb-box>
+                <umb-box-content>
+                    <h1 style="text-align:center">Users</h1>
+                    <h6 style="text-align:center">Users and User groups</h6>
+                    <div style="text-align:center">
+                        <button style="background-color: #1b264f;color:white">Report</button>
+                        <button style="background-color: #39d38b; color: white" ng-click="vm.usersimport()">Import</button>
+                        <button ng-click="vm.usersexport()"><span>Export</span></button>
+                    </div>
+                </umb-box-content>
+            </umb-box>
+
+            <umb-box>
+                <umb-box-content>
+                    <h1 style="text-align:center">Members</h1>
+                    <h6 style="text-align:center">Members and Member groups</h6>
+                    <div style="text-align:center">
+                        <button style="background-color: #1b264f;color:white">Report</button>
+                        <button style="background-color: #39d38b; color: white" ng-click="vm.membersimport()">Import</button>
+                        <button ng-click="vm.membersexport()"><span>Export</span></button>
+                    </div>
+                </umb-box-content>
+            </umb-box>
+
+            <umb-box>
+                <umb-box-content>
+                    <h1 style="text-align:center">Settings</h1>
+                    <h6 style="text-align:center">DataTypes, Doctypes and all settings</h6>
+                    <div style="text-align:center">
+                        <button style="background-color: #1b264f;color:white">Report</button>
+                        <button style="background-color: #39d38b; color: white" ng-click="vm.settingImport()">Import</button>
+                        <button ng-click="vm.settingExport()">Export</button>
+                    </div>
+                </umb-box-content>
+            </umb-box>
+
+            <umb-box>
+                <umb-box-content>
+                    <h1 style="text-align:center">Content</h1>
+                    <h6 style="text-align:center">Content, Media and related items</h6>
+                    <div style="text-align:center">
+                        <button style="background-color: #1b264f;color:white">Report</button>
+                        <button style="background-color: #39d38b; color: white" ng-click="vm.contentImport()">Import</button>
+                        <button ng-click="vm.contentExport()">Export</button>
+                    </div>
+                </umb-box-content>
+            </umb-box>
+        </div>
+        <umb-box ng-show="everythingStatus" class="icon-view-status">
+            <!--<span class="close" ng-click="vm.close()">&times;</span>-->
+            <umb-box-header>
+                <div class="umb-box-header-title">
+                    <h1 style="text-align:center">Everything</h1>
+                </div>
+            </umb-box-header>
+            <umb-box-content>
+                <div class="icon-view-export">
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Language') && '/App_Plugins/cSyncMaster/backoffice/images/Language.png' || '/App_Plugins/cSyncMaster/backoffice/images/LanguageUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('UserGroups') && '/App_Plugins/cSyncMaster/backoffice/images/Usergroups.png' || '/App_Plugins/cSyncMaster/backoffice/images/UsergroupsUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Users') && '/App_Plugins/cSyncMaster/backoffice/images/Users.png' || '/App_Plugins/cSyncMaster/backoffice/images/UsersUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Dictionary') && '/App_Plugins/cSyncMaster/backoffice/images/Dictionary.png' || '/App_Plugins/cSyncMaster/backoffice/images/DictionaryUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('DataType') && '/App_Plugins/cSyncMaster/backoffice/images/DataType.png' || '/App_Plugins/cSyncMaster/backoffice/images/DataTypeUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Template') && '/App_Plugins/cSyncMaster/backoffice/images/Template.png' || '/App_Plugins/cSyncMaster/backoffice/images/TemplateUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('DocType') && '/App_Plugins/cSyncMaster/backoffice/images/DocType.png' || '/App_Plugins/cSyncMaster/backoffice/images/DocTypeUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('MediaType') && '/App_Plugins/cSyncMaster/backoffice/images/MediaType.png' || '/App_Plugins/cSyncMaster/backoffice/images/MediaTypeUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('MemberType') && '/App_Plugins/cSyncMaster/backoffice/images/MemberType.png' || '/App_Plugins/cSyncMaster/backoffice/images/MemberTypeUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('MemberGroups') && '/App_Plugins/cSyncMaster/backoffice/images/MemberGroups.png' || '/App_Plugins/cSyncMaster/backoffice/images/MemberGroupsUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Member') && '/App_Plugins/cSyncMaster/backoffice/images/Members.png' || '/App_Plugins/cSyncMaster/backoffice/images/MembersUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Macro') && '/App_Plugins/cSyncMaster/backoffice/images/Macros.png' || '/App_Plugins/cSyncMaster/backoffice/images/MacrosUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Media') && '/App_Plugins/cSyncMaster/backoffice/images/Media.png' || '/App_Plugins/cSyncMaster/backoffice/images/MediaUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Content') && '/App_Plugins/cSyncMaster/backoffice/images/Content.png' || '/App_Plugins/cSyncMaster/backoffice/images/ContentUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Blueprint') && '/App_Plugins/cSyncMaster/backoffice/images/Blueprints.png' || '/App_Plugins/cSyncMaster/backoffice/images/BlueprintsUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Domain') && '/App_Plugins/cSyncMaster/backoffice/images/Domain.png' || '/App_Plugins/cSyncMaster/backoffice/images/DomainUntick.png'}}" style="width:100px" alt="Language" /></div>
+                    <div class="image"><h9>6</h9><img ng-src="{{interfaces.includes('Relation') && '/App_Plugins/cSyncMaster/backoffice/images/Relation.png' || '/App_Plugins/cSyncMaster/backoffice/images/RelationUntick.png'}}" style="width:100px" alt="Language" /></div>
+                </div>
+            </umb-box-content>
+        </umb-box>
+        <umb-box ng-show="usersStatus" class="icon-view-status">
+            <!--<span class="close" ng-click="vm.close()">&times;</span>-->
+            <umb-box-header>
+                <div class="umb-box-header-title">
+                    <h1 style="text-align:center">Users</h1>
+                </div>
+            </umb-box-header>
+            <umb-box-content>
+                <div class="icon-view-export">
+                    <img ng-src="{{interfaces.includes('UserGroups') && '/App_Plugins/cSyncMaster/backoffice/images/Usergroups.png' ||'/App_Plugins/cSyncMaster/backoffice/images/UsergroupsUntick.png' }}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Users') && '/App_Plugins/cSyncMaster/backoffice/images/Users.png' || '/App_Plugins/cSyncMaster/backoffice/images/UsersUntick.png'  }}" style="width:100px" alt="Language" />
+                </div>
+            </umb-box-content>
+        </umb-box>
+        <umb-box ng-show="contentStatus" class="icon-view-status">
+            <!--<span class="close" ng-click="vm.close()">&times;</span>-->
+            <umb-box-header>
+                <div class="umb-box-header-title">
+                    <h1 style="text-align:center">Content</h1>
+                </div>
+            </umb-box-header>
+            <umb-box-content>
+                <div class="icon-view-export">
+                    <img ng-src="{{interfaces.includes('Dictionary') && '/App_Plugins/cSyncMaster/backoffice/images/Dictionary.png' || '/App_Plugins/cSyncMaster/backoffice/images/DictionaryUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Media') && '/App_Plugins/cSyncMaster/backoffice/images/Media.png' || '/App_Plugins/cSyncMaster/backoffice/images/MediaUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Content') && '/App_Plugins/cSyncMaster/backoffice/images/Content.png' || '/App_Plugins/cSyncMaster/backoffice/images/ContentUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Blueprint') && '/App_Plugins/cSyncMaster/backoffice/images/Blueprints.png' || '/App_Plugins/cSyncMaster/backoffice/images/BlueprintsUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Domain') && '/App_Plugins/cSyncMaster/backoffice/images/Domain.png' || '/App_Plugins/cSyncMaster/backoffice/images/DomainUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Relation') && '/App_Plugins/cSyncMaster/backoffice/images/Relation.png' || '/App_Plugins/cSyncMaster/backoffice/images/RelationUntick.png'}}" style="width:100px" alt="Language" />
+                </div>
+            </umb-box-content>
+        </umb-box>
+
+
+        <umb-box ng-show="settingsStatus" class="icon-view-status">
+            <!--<span class="close" ng-click="vm.close()">&times;</span>-->
+            <umb-box-header>
+                <div class="umb-box-header-title">
+                    <h1 style="text-align:center">Settings</h1>
+                </div>
+            </umb-box-header>
+            <umb-box-content>
+                <div class="icon-view-export">
+                    <img ng-src="{{interfaces.includes('Macro') && '/App_Plugins/cSyncMaster/backoffice/images/Macros.png' || '/App_Plugins/cSyncMaster/backoffice/images/MacrosUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Language') && '/App_Plugins/cSyncMaster/backoffice/images/Language.png' || '/App_Plugins/cSyncMaster/backoffice/images/LanguageUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('DataType') && '/App_Plugins/cSyncMaster/backoffice/images/DataType.png' || '/App_Plugins/cSyncMaster/backoffice/images/DataTypeUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Template') && '/App_Plugins/cSyncMaster/backoffice/images/Template.png' || '/App_Plugins/cSyncMaster/backoffice/images/TemplateUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('DocType') && '/App_Plugins/cSyncMaster/backoffice/images/DocType.png' || '/App_Plugins/cSyncMaster/backoffice/images/DocTypeUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('MediaType') && '/App_Plugins/cSyncMaster/backoffice/images/MediaType.png' || '/App_Plugins/cSyncMaster/backoffice/images/MediaTypeUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('MemberType') && '/App_Plugins/cSyncMaster/backoffice/images/MemberType.png' || '/App_Plugins/cSyncMaster/backoffice/images/MemberTypeUntick.png'}}" style="width:100px" alt="Language" />
+                </div>
+            </umb-box-content>
+        </umb-box>
+        <umb-box ng-show="memberStatus" class="icon-view-status">
+            <!--<span class="close" ng-click="vm.close()">&times;</span>-->
+            <umb-box-header>
+                <div class="umb-box-header-title">
+                    <h1 style="text-align:center">Members</h1>
+                </div>
+            </umb-box-header>
+            <umb-box-content>
+                <div class="icon-view-export">
+                    <img ng-src="{{interfaces.includes('MemberGroups') && '/App_Plugins/cSyncMaster/backoffice/images/MemberGroups.png' || '/App_Plugins/cSyncMaster/backoffice/images/MemberGroupsUntick.png'}}" style="width:100px" alt="Language" />
+                    <img ng-src="{{interfaces.includes('Member') && '/App_Plugins/cSyncMaster/backoffice/images/Members.png' || '/App_Plugins/cSyncMaster/backoffice/images/MembersUntick.png'}}" style="width:100px" alt="Language" />
+                </div>
+            </umb-box-content>
+        </umb-box>
+    </div>
+</div>
+
